@@ -140,5 +140,5 @@ def plot_bars(names, y_values):
     plt.legend(loc="center left", bbox_to_anchor=(1, 0.5))
     plt.show()
 
-
 plot_bars(appliances_base, y_values)
+
