@@ -38,9 +38,9 @@ numAppliances = 6
 # Right side values for optimization problem
 rhs_eq = [1.44, 1.94, 2.5, 9.9]
 rhs_ineq_values = [1.8, 1.5, 2, 4]
-
-# Left side values for optimization problem
 rhs_ineq = []
+
+# Left side vectors for optimization problem
 lhs_ineq = []
 lhs_eq = []
 
@@ -208,13 +208,12 @@ def plot_bars(names):
     for the different appliances.
     :param names:      Name of the appliances included in the graph
     """
-
-    # Adding y-values for bar graph
+    # The new energy consumption for each appliance
     y_values = [opt.x[i:i + 24] for i in range(0, len(opt.x), 24)]
     y_values.append(combined_consumptions_non_shiftable)
     appliances_base.append("Non-shiftable appliances")
 
-    # Setting the consumptions to the names in graph
+    # Combining energy consumptions and their appliance label
     consumptions = {name: y for (name, y) in zip(names, y_values)}
 
     df = pd.DataFrame(consumptions)
