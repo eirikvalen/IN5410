@@ -31,7 +31,7 @@ appliances_random = {"Coffee maker": [0.76, 1.52, 8, 12],
                      "Freezer": [0.84, 0.035, 0, 23]}
 
 # Max peak load constraint
-L = 2.5
+L = 5
 
 numAppliances = 6
 
@@ -146,7 +146,6 @@ def add_max_power_use_hours_rhs(rhs_ineq):
     """
     for value in rhs_ineq_values:
         rhs_ineq += [value] * 24
-        print(value)
 
 
 def add_max_peak_load():
