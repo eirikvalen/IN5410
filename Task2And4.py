@@ -19,7 +19,7 @@ non_shiftable = {"Lighting": [1.5, 0, 10, 20],
                  "TV": [0.22, 0, 18, 21],
                  "Computer": [0.3, 0, 16, 21]}
 
-# Shiftable appliances that always are included in energy consumption
+# Random shiftable appliances where some will be included
 appliances_random = {"Coffee maker": [0.76, 1.52, 8, 12],
                      "Ceiling fan": [0.97, 0.075, 7, 20],
                      "Hair dryer": [0.9, 1.5, 7, 8],
