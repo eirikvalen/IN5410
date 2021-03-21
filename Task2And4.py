@@ -55,16 +55,6 @@ for i in range(numAppliances):
     lhs_eq.append([0] * numAppliances * 24)
 
 
-def price(hour):
-    """
-    Function that generates a random price curve
-    :param hour:
-    :return: int list with prices from hour 0-23
-    """
-    random.seed(10 + hour)
-    return random.uniform(1, 2) if 17 <= hour <= 20 else random.uniform(0.1, 1)
-
-
 def add_operation_time_lhs(start, end, appliance):
     """
     Function adding vectors (1) to equality constraint. These vectors represent the
@@ -100,8 +90,6 @@ def add_random_appliances(number):
 
         # Adding hourly max
         rhs_ineq_values.append(appliances_random[item][1])
-
-
 
 
 combined_consumptions_non_shiftable = [0] * 24
@@ -169,13 +157,13 @@ def add_max_peak_load():
 # creating operation times for the base appliances.
 add_random_appliances(2)
 add_max_power_use_hours_rhs(rhs_ineq)
-add_max_peak_load()
 add_operation_time_lhs(7, 23, "Cloth dryer")
 add_operation_time_lhs(7, 23, "Laundry machine")
 add_operation_time_lhs(0, 7, "Electric vehicle")
 add_operation_time_lhs(17, 23, "Electric vehicle")
 add_operation_time_lhs(12, 18, "Dishwasher")
 
+add_max_peak_load()
 
 # Using linprog to calculate optimization problem
 objective = prices * numAppliances
@@ -199,9 +187,8 @@ def calculate_total_price(df):
     print("L: " + str(L) + " | Energy consumption: " + str(energy_consumption) + " | Total price: " + str(total_sum))
 
 
-    
 
-def plot_bars(names):
+def plot_bars(names, task4):
     """
     Function to plot a graphical representation (bar graph) of the energy consumption
     for the different appliances.
@@ -218,11 +205,13 @@ def plot_bars(names):
     df = pd.DataFrame(consumptions)
     calculate_total_price(df)
 
+    if (task4):
+        plt.axhline(y=L, color = 'r', linestyle="-", label="Max peak load (L)")
+
     # Plotting details
     ax = df.plot(kind="bar", stacked=True, rot=0, figsize=(10, 5))
     ax.set_ylim(0, 10)
     plt.yticks(range(0,10,1))
-    plt.axhline(y=L, color = 'r', linestyle="-", label="Max peak load (L)")
     plt.xlabel("Hour")
     plt.ylabel("Energy consumption (kWh)")
     plt.title("Energy consumption")
@@ -231,7 +220,7 @@ def plot_bars(names):
     plt.show()
 
 
-plot_bars(appliances_base)
+plot_bars(appliances_base, True)
 
 def plot_price_curve():
     """
@@ -244,6 +233,5 @@ def plot_price_curve():
     plt.xlabel("Hour")
     plt.ylabel("Price (NOK / MWh)")
     plt.show()
-
 
 plot_price_curve()
