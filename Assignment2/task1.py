@@ -49,6 +49,30 @@ def plotResults(actualPower, predictedPower, model):
     plt.ylabel("Power")
     plt.show()
 
+def plotResults3Inputs(actualPower, predictedpower1, predictedPower):
+    fig, ax = plt.subplots(figsize=(9, 5))
+    ax.set_xticklabels([])
+    plt.plot(actualPower, color='gray', label="actual power")
+    plt.plot(predictedpower1, color='lightseagreen', label="linear regression")
+    plt.plot(predictedPower, color='darkorange', label="multiple linear regression")
+    plt.legend()
+    # plt.legend( bbox_to_anchor=(1.05, 1), loc='upper center')
+
+    plt.title("Simple, multiple and actual wind power")
+    plt.xlabel("Time")
+    plt.ylabel("Power")
+    plt.show()
+
+def scatterPlot(forecastInput, actualPower, predictedPower, model):
+    plt.scatter(forecastInput, actualPower, c="r", s=1.5)
+    plt.scatter(forecastInput, predictedPower, c="b", s=1.5)
+    plt.title("True vs. predicted wind power, " + model)
+    plt.xlabel("Time")
+    plt.ylabel("Power")
+    plt.show()
+
+
+
 # ---------------- For task 1 ----------------
 def linearRegression(windspeed, power, forecastInput, actualPower):
     model = LinearRegression()
@@ -59,23 +83,21 @@ def linearRegression(windspeed, power, forecastInput, actualPower):
 
     print("RMSE linear regression ", RMSE(actualPower, predictedPower))
 
-    plotResults(actualPower, predictedPower, "linear regression")
+    # plotResults(actualPower, predictedPower, "linear regression")
+
+    return predictedPower
 
 
 def knn(windspeed, power, forecastInput, actualPower):
-    for k in range(190, 191):
+    for k in [20]:
         model = KNeighborsRegressor(n_neighbors=k)
         model.fit(windspeed, power)
 
         predictedPower = model.predict(forecastInput)
 
-        plt.scatter(forecastInput, actualPower, c="r", s=1.5)
-        plt.scatter(forecastInput, predictedPower, c="b", s=1.5)
-        plt.show()
-
         print("RMSE knn k = %d : %f" % (k, RMSE(predictedPower, actualPower)))
 
-    # plotResults(actualPower, predictedPower, "knn")
+        plotResults(actualPower, predictedPower, "knn")
 
 
 def svr(windspeed, power, forecastInput, actualPower):
@@ -112,21 +134,17 @@ def neuralNetwork(windspeed, power, forecastInput, actualPower):
     predictedPower = model.predict(forecastInput)
 
     actualPower = actualPower.reshape((-1, 1))
+
     print("RMSE Neural networks", RMSE(actualPower, predictedPower))
 
-    plt.scatter(forecastInput, actualPower, c="r", s=1.0)
-    plt.scatter(forecastInput, predictedPower, c="b")
-    plt.title("neural network")
-
-    plt.show()
-
+    scatterPlot(forecastInput, actualPower, predictedPower, "Neural networks")
     plotResults(actualPower, predictedPower, "neural network")
 
 
 # linearRegression(windspeed, power, ws, actualPower)
 # knn(windspeed, power, ws, actualPower)
 # svr(windspeed, power, ws, actualPower)
-neuralNetwork(windspeed, power, ws, actualPower)
+# neuralNetwork(windspeed, power, ws, actualPower)
 
 
 
@@ -144,9 +162,15 @@ def multipleLinReg(windspeed, direction, power, forecastInput, actualPower):
 
     print("RMSE multiple linear regression", RMSE(actualPower, predictedPower))
 
+    # plotResults(actualPower, predictedPower, "multiple linear regression")
 
-# multiple_lin_reg(windspeed, direction, power, x_input, actualPower)
+    return predictedPower
 
+
+
+# plotResults3Inputs(actualPower,
+#              linearRegression(windspeed, power, ws, actualPower),
+#              multipleLinReg(windspeed, direction, power, x_input, actualPower))
 
 
 
