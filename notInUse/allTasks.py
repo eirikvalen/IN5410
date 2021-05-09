@@ -11,7 +11,7 @@ from tensorflow.keras.layers import Dense, Dropout, LSTM
 
 # ---------------- Reading from files ----------------
 # Training data
-df = pd.read_csv('TrainData.csv', sep=',')
+df = pd.read_csv('../Assignment2/TrainData.csv', sep=',')
 windspeed_training = df["WS10"].to_numpy().reshape((-1, 1))
 power_training = df["POWER"].to_numpy()
 u = df["U10"].to_numpy()
@@ -19,7 +19,7 @@ v = df["V10"].to_numpy()
 wind_direction = np.mod(180 + np.rad2deg(np.arctan2(v, u)), 360)
 
 # Input data
-df = pd.read_csv("WeatherForecastInput.csv", sep=',')
+df = pd.read_csv("../Assignment2/WeatherForecastInput.csv", sep=',')
 windspeed_input = df["WS10"].to_numpy().reshape((-1, 1))
 u_input = df["U10"].to_numpy()
 v_input = df["V10"].to_numpy()
@@ -27,7 +27,7 @@ direction_input = np.mod(180 + np.rad2deg(np.arctan2(v_input, u_input)), 360).re
 windspeed_and_direction_input = np.concatenate((windspeed_input, direction_input), axis=1)
 
 # Solution (actual power)
-df = pd.read_csv("Solution.csv", sep=',')
+df = pd.read_csv("../Assignment2/Solution.csv", sep=',')
 time = df["TIMESTAMP"].to_numpy()
 actualPower = df["POWER"].to_numpy()
 
