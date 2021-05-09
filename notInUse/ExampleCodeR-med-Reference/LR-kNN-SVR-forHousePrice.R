@@ -30,8 +30,8 @@ library (FNN)
 AreaTest = seq (70, 200, by=5)
 
 # Look at kNN regression 
-knnmodel1 = knn.reg(train=matrix(MyData$Area,ncol=1),test=matrix(AreaTest,ncol=1),y=MyData$Price, k=1)
-knnmodel2 = knn.reg(train=matrix(MyData$Area,ncol=1),test=matrix(AreaTest,ncol=1),y=MyData$Price, k=2)
+knnmodel1 = k_nearest_neighbor.reg(train=matrix(MyData$Area,ncol=1),test=matrix(AreaTest,ncol=1),y=MyData$Price, k=1)
+knnmodel2 = k_nearest_neighbor.reg(train=matrix(MyData$Area,ncol=1),test=matrix(AreaTest,ncol=1),y=MyData$Price, k=2)
 
 windows()
 
