@@ -1,3 +1,4 @@
+import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
@@ -17,7 +18,9 @@ windspeed_input = input_data[0]
 wind_direction = input_data[1]
 windspeed_and_direction_input = input_data[2]
 
-actual_power = read_solution()
+solution = read_solution()
+actual_power = solution[0]
+timestamp = solution[1]
 
 
 def create_timeseries(powers, windowsize):
@@ -123,7 +126,7 @@ def timeseries_recurrant_neural_network(x, y, forecast_input, actual_power, wind
     return predicted_power, rmse
 
 
-def run_all_models_task3(actual_power, windowsize, show_plots):
+def run_all_models_task3(actual_power, windowsize, show_plots, write_to_csv):
     x, y = create_timeseries(power_training, windowsize)
     forecast_input = create_timeseries(actual_power, windowsize)[0]
 
@@ -134,13 +137,28 @@ def run_all_models_task3(actual_power, windowsize, show_plots):
 
     if show_plots:
         plot_results_3_inputs(actual_power, ts_lin_reg[0], ts_svr[0], "actual power", "linear regression",
-                           "supported vector regression",
-                           "actual power, linear regression and SVR comparison for timeseries")
+                              "supported vector regression",
+                              "actual power, linear regression and SVR comparison for timeseries")
 
         plot_results_3_inputs(actual_power, ts_ann[0], ts_rnn[0], "actual power", "artificial neural network",
-                           "recurrant neural network",
-                           "actual power, ANN and RNN comparison for timeseries")
+                              "recurrant neural network",
+                              "actual power, ANN and RNN comparison for timeseries")
 
+    if write_to_csv:
+        header = "TIMESTAMP, POWER"
+
+        pd.DataFrame({"TIMESTAMP": timestamp[windowsize:], "POWER": ts_lin_reg[0]}).to_csv(
+            "../ForecastResults/ForecastTemplate3-LR.csv",
+            index=None, header=header)
+        pd.DataFrame({"TIMESTAMP": timestamp[windowsize:], "POWER": ts_svr[0]}).to_csv(
+            "../ForecastResults/ForecastTemplate3-SVR.csv",
+            index=None, header=header)
+        pd.DataFrame({"TIMESTAMP": timestamp[windowsize:], "POWER": ts_ann[0].flat}).to_csv(
+            "../ForecastResults/ForecastTemplate3-ANN.csv",
+            index=None, header=header)
+        pd.DataFrame({"TIMESTAMP": timestamp[windowsize:], "POWER": ts_rnn[0].flat}).to_csv(
+            "../ForecastResults/ForecastTemplate3-RNN.csv",
+            index=None, header=header)
 
     print("RMSE timeseries LinReg:" + str(ts_lin_reg[1]) + ", windowsize = " + str(windowsize))
     print("RMSE timeseries SVR:" + str(ts_svr[1]) + ", windowsize = " + str(windowsize))
@@ -148,4 +166,4 @@ def run_all_models_task3(actual_power, windowsize, show_plots):
     print("RMSE timeseries RNN:" + str(ts_rnn[1]) + ", windowsize = " + str(windowsize))
 
 
-run_all_models_task3(actual_power, 1, True)
+run_all_models_task3(actual_power, 1, False, True)
